@@ -1,7 +1,16 @@
-__doc__ = """
-ClassUtil.py provides quick routines for obtaining the class names
-of an object and its parent classes
+# -*- coding: UTF-8 -*-
+
+""" ClassUtil.py
+	Provides quick routines for obtaining the class names
+of an object and its parent classes.
+	
+Copyright © 2004 Sandia National Laboratories  
 """
+
+__author__ = 'Jason R. Coombs <jaraco@sandia.gov>'
+__version__ = '$Revision: 3 $'[11:-2]
+__vssauthor__ = '$Author: Jaraco $'[9:-2]
+__date__ = '$Modtime: 04-06-23 12:18 $'[10:-2]
 
 import types
 
