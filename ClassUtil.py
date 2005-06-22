@@ -8,9 +8,9 @@ Copyright © 2004 Sandia National Laboratories
 """
 
 __author__ = 'Jason R. Coombs <jaraco@sandia.gov>'
-__version__ = '$Rev: 3 $'[6:-2]
-__svnauthor__ = '$Author: Jaraco $'[9:-2]
-__date__ = '$Date: 04-06-23 12:18 $'[7:-2]
+__version__ = '$Rev$'[6:-2]
+__svnauthor__ = '$Author$'[9:-2]
+__date__ = '$Date$'[7:-2]
 
 import types
 
