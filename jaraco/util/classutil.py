@@ -4,7 +4,7 @@
 	Provides quick routines for obtaining the class names
 of an object and its parent classes.
 	
-Copyright © 2004 Jason R. Coombs  
+Copyright (c) 2004 Jason R. Coombs  
 """
 
 __author__ = 'Jason R. Coombs <jaraco@jaraco.com>'
