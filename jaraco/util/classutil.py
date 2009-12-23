@@ -1,10 +1,11 @@
 # -*- coding: UTF-8 -*-
 
-"""ClassUtil.py
+"""
+ClassUtil.py
 Provides quick routines for obtaining the class names
 of an object and its parent classes.
 
-Copyright © 2004 Jason R. Coombs  
+Copyright © 2004, 2009 Jason R. Coombs  
 """
 
 __author__ = 'Jason R. Coombs <jaraco@jaraco.com>'
@@ -35,7 +36,7 @@ def all_bases(c):
 	>>> object in all_bases(list)
 	True
 	"""
-	return tuple(flatten(tuple(map(all_bases, c.__bases__)) + c.__bases__))
+	return c.mro()[1:]
 
 def all_classes(c):
 	"""
@@ -43,4 +44,4 @@ def all_classes(c):
 	>>> list in all_classes(list)
 	True
 	"""
-	return (c,)+all_bases(c)
+	return c.mro()
