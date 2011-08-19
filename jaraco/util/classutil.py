@@ -50,7 +50,7 @@ def itersubclasses(cls, _seen=None):
 
 	Generator over all subclasses of a given class, in depth-first order.
 
-	>>> list(itersubclasses(int)) == [bool]
+	>>> bool in list(itersubclasses(int))
 	True
 	>>> class A(object): pass
 	>>> class B(A): pass
