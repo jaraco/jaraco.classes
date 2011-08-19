@@ -5,8 +5,10 @@ ClassUtil.py
 Provides quick routines for obtaining the class names
 of an object and its parent classes.
 
-Copyright © 2004, 2009, 2011 Jason R. Coombs	
+Copyright © 2004, 2009, 2011 Jason R. Coombs
 """
+
+from __future__ import absolute_import
 
 __author__ = 'Jason R. Coombs <jaraco@jaraco.com>'
 
@@ -55,7 +57,7 @@ def itersubclasses(cls, _seen=None):
 	>>> class C(A): pass
 	>>> class D(B,C): pass
 	>>> class E(D): pass
-	>>> 
+	>>>
 	>>> for cls in itersubclasses(A):
 	...		print(cls.__name__)
 	B
@@ -66,7 +68,7 @@ def itersubclasses(cls, _seen=None):
 	>>> [cls.__name__ for cls in itersubclasses(object)] #doctest: +ELLIPSIS
 	['type', ...'tuple', ...]
 	"""
-	
+
 	if not isinstance(cls, type):
 		raise TypeError('itersubclasses must be called with '
 			'new-style classes, not %.100r' % cls)
