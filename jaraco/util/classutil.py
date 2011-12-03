@@ -8,7 +8,7 @@ of an object and its parent classes.
 Copyright © 2004, 2009, 2011 Jason R. Coombs
 """
 
-from __future__ import absolute_import
+from __future__ import absolute_import, unicode_literals
 
 __author__ = 'Jason R. Coombs <jaraco@jaraco.com>'
 
