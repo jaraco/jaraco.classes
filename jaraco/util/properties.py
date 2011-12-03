@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 class NonDataProperty(object):
 	"""Much like the property builtin, but only implements __get__,
 	making it a non-data property, and can be subsequently reset.
