@@ -13,7 +13,6 @@ from __future__ import absolute_import, unicode_literals
 __author__ = 'Jason R. Coombs <jaraco@jaraco.com>'
 
 from collections import Sequence
-import itertools
 
 def ensure_sequence(el):
 	"""
@@ -75,7 +74,7 @@ def itersubclasses(cls, _seen=None):
 	if _seen is None: _seen = set()
 	try:
 		subs = cls.__subclasses__()
-	except TypeError: # fails only when cls is type
+	except TypeError:  # fails only when cls is type
 		subs = cls.__subclasses__(cls)
 	for sub in subs:
 		if sub in _seen:
