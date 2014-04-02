@@ -64,8 +64,13 @@ def itersubclasses(cls, _seen=None):
 	E
 	C
 	>>> # get ALL (new-style) classes currently defined
-	>>> [cls.__name__ for cls in itersubclasses(object)] #doctest: +ELLIPSIS
-	['type', ...'tuple', ...]
+	>>> res = [cls.__name__ for cls in itersubclasses(object)]
+	>>> 'type' in res
+	True
+	>>> 'tuple' in res
+	True
+	>>> len(res) > 100
+	True
 	"""
 
 	if not isinstance(cls, type):
