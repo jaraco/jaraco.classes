@@ -1,5 +1,7 @@
 from __future__ import unicode_literals
 
+import six
+
 class NonDataProperty(object):
 	"""Much like the property builtin, but only implements __get__,
 	making it a non-data property, and can be subsequently reset.
@@ -21,7 +23,7 @@ class NonDataProperty(object):
 
 	def __init__(self, fget):
 		assert fget is not None, "fget cannot be none"
-		assert callable(fget), "fget must be callable"
+		assert six.callable(fget), "fget must be callable"
 		self.fget = fget
 
 	def __get__(self, obj, objtype=None):
