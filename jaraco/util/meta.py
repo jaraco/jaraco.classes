@@ -21,3 +21,17 @@ class LeafClassesMeta(type):
 		leaf_classes.add(cls)
 		# remove any base classes
 		leaf_classes -= set(bases)
+
+
+class TagRegistered(type):
+	"""
+	As classes of this metaclass are created, they keep a registry in the
+	base class of all classes by a class attribute, 'tag'.
+	"""
+	def __init__(cls, name, bases, namespace):
+		super(TagRegistered, cls).__init__(name, bases, namespace)
+		if not hasattr(cls, '_registry'):
+			cls._registry = {}
+		attr = getattr(cls, 'tag', None)
+		if attr:
+			cls._registry[attr] = cls
