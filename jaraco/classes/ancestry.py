@@ -3,26 +3,7 @@ Routines for obtaining the class names
 of an object and its parent classes.
 """
 
-from __future__ import absolute_import, unicode_literals
-
-import warnings
-
-import jaraco.itertools
-
-def ensure_sequence(el):
-	"""
-	*Deprecated*
-
-	if item is not a sequence, return the item as a singleton in a list
-
-	>>> ensure_sequence(3)
-	[3]
-	>>> ensure_sequence([3,4])
-	[3, 4]
-	"""
-	msg = "Deprecated. Use jaraco.itertools.always_iterable"
-	warnings.warn(msg, DeprecationWarning)
-	return list(jaraco.itertools.always_iterable(el))
+from __future__ import unicode_literals
 
 def all_bases(c):
 	"""
@@ -41,10 +22,8 @@ def all_classes(c):
 	return c.mro()
 
 # borrowed from http://code.activestate.com/recipes/576949-find-all-subclasses-of-a-given-class/
-def itersubclasses(cls, _seen=None):
+def iter_subclasses(cls, _seen=None):
 	"""
-	itersubclasses(cls)
-
 	Generator over all subclasses of a given class, in depth-first order.
 
 	>>> bool in list(itersubclasses(int))
