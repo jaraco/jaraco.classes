@@ -26,7 +26,7 @@ def iter_subclasses(cls, _seen=None):
 	"""
 	Generator over all subclasses of a given class, in depth-first order.
 
-	>>> bool in list(itersubclasses(int))
+	>>> bool in list(iter_subclasses(int))
 	True
 	>>> class A(object): pass
 	>>> class B(A): pass
@@ -34,14 +34,14 @@ def iter_subclasses(cls, _seen=None):
 	>>> class D(B,C): pass
 	>>> class E(D): pass
 	>>>
-	>>> for cls in itersubclasses(A):
+	>>> for cls in iter_subclasses(A):
 	...		print(cls.__name__)
 	B
 	D
 	E
 	C
 	>>> # get ALL (new-style) classes currently defined
-	>>> res = [cls.__name__ for cls in itersubclasses(object)]
+	>>> res = [cls.__name__ for cls in iter_subclasses(object)]
 	>>> 'type' in res
 	True
 	>>> 'tuple' in res
@@ -51,7 +51,7 @@ def iter_subclasses(cls, _seen=None):
 	"""
 
 	if not isinstance(cls, type):
-		raise TypeError('itersubclasses must be called with '
+		raise TypeError('iter_subclasses must be called with '
 			'new-style classes, not %.100r' % cls)
 	if _seen is None: _seen = set()
 	try:
@@ -63,5 +63,5 @@ def iter_subclasses(cls, _seen=None):
 			continue
 		_seen.add(sub)
 		yield sub
-		for sub in itersubclasses(sub, _seen):
+		for sub in iter_subclasses(sub, _seen):
 			yield sub
