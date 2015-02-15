@@ -1,16 +1,9 @@
-# -*- coding: UTF-8 -*-
-
 """
-ClassUtil.py
-Provides quick routines for obtaining the class names
+Routines for obtaining the class names
 of an object and its parent classes.
-
-Copyright © 2004, 2009, 2011 Jason R. Coombs
 """
 
 from __future__ import absolute_import, unicode_literals
-
-__author__ = 'Jason R. Coombs <jaraco@jaraco.com>'
 
 from collections import Sequence
 
@@ -88,8 +81,3 @@ def itersubclasses(cls, _seen=None):
 		yield sub
 		for sub in itersubclasses(sub, _seen):
 			yield sub
-
-
-if __name__ == '__main__':
-	import doctest
-	doctest.testmod(verbose=1)
