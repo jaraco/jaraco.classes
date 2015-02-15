@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 import six
 
+
 class NonDataProperty(object):
 	"""Much like the property builtin, but only implements __get__,
 	making it a non-data property, and can be subsequently reset.
@@ -55,6 +56,7 @@ class ClassPropertyDescriptor(object):
 			func = classmethod(func)
 		self.fset = func
 		return self
+
 
 def classproperty(func):
 	if not isinstance(func, (classmethod, staticmethod)):
