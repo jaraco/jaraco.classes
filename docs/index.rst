@@ -1,5 +1,11 @@
-Welcome to jaraco.classes documentation!
+Welcome to skeleton documentation!
 ========================================
+
+.. toctree::
+   :maxdepth: 1
+
+   history
+
 
 .. automodule:: jaraco.classes
     :members:
