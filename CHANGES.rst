@@ -1,3 +1,10 @@
+1.3
+===
+
+Move hosting to Github.
+
+Use setuptools_scm for version detection.
+
 1.2
 ===
 
