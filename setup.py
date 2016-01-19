@@ -28,7 +28,7 @@ setup_params = dict(
 		'six',
 	],
 	setup_requires=[
-		'hgtools',
+		'setuptools_scm',
 	] + pytest_runner + sphinx,
 	tests_require=[
 		'pytest',
