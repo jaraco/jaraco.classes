@@ -1,4 +1,4 @@
-Welcome to skeleton documentation!
+Welcome to jaraco.classes documentation!
 ========================================
 
 .. toctree::
@@ -7,7 +7,17 @@ Welcome to skeleton documentation!
    history
 
 
-.. automodule:: jaraco.classes
+.. automodule:: jaraco.classes.ancestry
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+.. automodule:: jaraco.classes.meta
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+.. automodule:: jaraco.classes.properties
     :members:
     :undoc-members:
     :show-inheritance:
