@@ -1,3 +1,10 @@
+1.4
+===
+
+Added documentation.
+
+Project is now automatically released by Travis CI.
+
 1.3
 ===
 
