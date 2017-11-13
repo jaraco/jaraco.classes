@@ -56,8 +56,10 @@ def iter_subclasses(cls, _seen=None):
 	"""
 
 	if not isinstance(cls, type):
-		raise TypeError('iter_subclasses must be called with '
-                  'new-style classes, not %.100r' % cls)
+		raise TypeError(
+			'iter_subclasses must be called with '
+			'new-style classes, not %.100r' % cls
+		)
 	if _seen is None:
 		_seen = set()
 	try:
