@@ -1,3 +1,8 @@
+1.4.2
+=====
+
+#1: Added a project description.
+
 1.4.1
 =====
 
