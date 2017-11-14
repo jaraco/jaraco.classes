@@ -1,3 +1,9 @@
+1.4.3
+=====
+
+Corrected namespace package declaration to match
+``jaraco`` namespaced packages.
+
 1.4.2
 =====
 
