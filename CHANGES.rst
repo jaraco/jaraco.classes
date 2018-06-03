@@ -1,3 +1,10 @@
+1.5
+===
+
+Refresh packaging.
+
+Use Python 3 syntax for new-style classes.
+
 1.4.3
 =====
 
