@@ -9,9 +9,22 @@ class LeafClassesMeta(type):
     """
     A metaclass for classes that keeps track of all of them that
     aren't base classes.
-    """
 
-    _leaf_classes = set()
+    >>> Parent = LeafClassesMeta('MyParentClass', (), {})
+    >>> Parent in Parent._leaf_classes
+    True
+    >>> Child = LeafClassesMeta('MyChildClass', (Parent,), {})
+    >>> Child in Parent._leaf_classes
+    True
+    >>> Parent in Parent._leaf_classes
+    False
+
+    >>> Other = LeafClassesMeta('OtherClass', (), {})
+    >>> Parent in Other._leaf_classes
+    False
+    >>> len(Other._leaf_classes)
+    1
+    """
 
     def __init__(cls, name, bases, attrs):
         if not hasattr(cls, '_leaf_classes'):
