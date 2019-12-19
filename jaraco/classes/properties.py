@@ -66,6 +66,20 @@ class classproperty:
     >>> X().foo
     5
 
+    Attempting to set an attribute where no setter was defined
+    results in an AttributeError:
+
+    >>> class GetOnly(metaclass=classproperty.Meta):
+    ...   @classproperty
+    ...   def foo(cls):
+    ...     return 'bar'
+    >>> GetOnly.foo = 3
+    Traceback (most recent call last):
+    ...
+    AttributeError: can't set attribute
+
+    *Legacy*
+
     For compatibility, if the metaclass isn't specified, the
     legacy behavior will be invoked.
 
@@ -111,7 +125,8 @@ class classproperty:
 
     def __init__(self, fget, fset=None):
         self.fget = self._fix_function(fget)
-        self.setter(fset) if fset else None
+        self.fset = fset
+        fset and self.setter(fset)
 
     def __get__(self, instance, owner=None):
         return self.fget.__get__(None, owner)()
