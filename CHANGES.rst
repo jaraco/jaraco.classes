@@ -1,3 +1,8 @@
+v3.0.0
+======
+
+Project now requires Python 3.6 or later.
+
 2.0
 ===
 
