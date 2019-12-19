@@ -15,6 +15,8 @@ class NonDataProperty:
     >>> x.foo = 4
     >>> x.foo
     4
+    >>> X.foo
+    <jaraco.classes.properties.NonDataProperty object at ...>
     """
 
     def __init__(self, fget):
