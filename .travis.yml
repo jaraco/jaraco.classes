@@ -1,11 +1,9 @@
 dist: xenial
-sudo: false
 language: python
 
 python:
-- 2.7
 - 3.6
-- &latest_py3 3.7
+- &latest_py3 3.8
 
 jobs:
   fast_finish: true
@@ -14,11 +12,6 @@ jobs:
     if: tag IS present
     python: *latest_py3
     before_script: skip
-    env:
-    - TWINE_USERNAME=jaraco
-    # TWINE_PASSWORD
-    - secure: t5k9gj0XMF0WBa/LnbmbCxC6A7iD+FGojE+FRGibNIjUoC0qWRnytPJcsnb0ZMEUby8NY/8LJ2yQF+TUZenLkzHfVe1091748OpmaT44m50hCQGPJZOw7AY8qzUW0UONMlHoDlbjSI59Zwv9I83Shx/tk7F8PjHrWBY+SpFvNeXbFeHC5YyoSchfZ0pc62jx37oY+yZ8c2oitpJbSRZFR1qZD8Jh3qkeTLyWQO8k0vBggBblz8YQF0Yj0X5F+a5f5QURoFeSGy35JSDo/XFcn60vdgpK24YfAOeAJP4xb4+kHBh14GthKm+Ju692NVezGGrVdgkzRo/vh6SxbxknZrRWjwZOqsUEALWjNW2LH1BOKorjawB02uIVPHyFCJM/BotBDvOc8OsungS6T7E9v6KMTOk0yYoqPUdOohU1ZqBr3JqTpEkISgUcAP5fXgdnmZOBTLuilcAjMPXKq5mvn8Erh6WmH4/ductwsi8NN1dEptM/vvNamUEIfRDp1gBid+5BGigcy6HlGj1w3sarOg2u2fjhTeUOYFWDYOwytlLsTPX4fmbXGcA3Bz4xzBnVFkx2CO2l5kti/GTzY1gsV1EpuEKSLkrSyWjC8A8mpruXrq3Qw4gt5z2LmW/PCVb1qgu5v1qK7HmoR23z2XoVm03g9wcl50BbOI3s8gnhXak=
-    - TOX_TESTENV_PASSENV="TWINE_USERNAME TWINE_PASSWORD"
     script: tox -e release
 
 cache: pip
