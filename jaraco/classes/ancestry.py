@@ -3,8 +3,6 @@ Routines for obtaining the class names
 of an object and its parent classes.
 """
 
-from __future__ import unicode_literals
-
 
 def all_bases(c):
     """
@@ -46,7 +44,7 @@ def iter_subclasses(cls, _seen=None):
     D
     E
     C
-    >>> # get ALL (new-style) classes currently defined
+    >>> # get ALL classes currently defined
     >>> res = [cls.__name__ for cls in iter_subclasses(object)]
     >>> 'type' in res
     True
@@ -56,10 +54,6 @@ def iter_subclasses(cls, _seen=None):
     True
     """
 
-    if not isinstance(cls, type):
-        raise TypeError(
-            'iter_subclasses must be called with ' 'new-style classes, not %.100r' % cls
-        )
     if _seen is None:
         _seen = set()
     try:

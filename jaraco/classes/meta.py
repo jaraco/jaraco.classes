@@ -4,8 +4,6 @@ meta.py
 Some useful metaclasses.
 """
 
-from __future__ import unicode_literals
-
 
 class LeafClassesMeta(type):
     """
