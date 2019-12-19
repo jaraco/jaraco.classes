@@ -1,3 +1,13 @@
+v3.1.0
+======
+
+``classproperty`` decorator now supplies a
+``classproperty.Meta`` class. Classes that wish to have
+a class property should derive from that metaclass. This
+approach solves the unintended behavior of the property
+only being set on a given instance. For compatibility, the
+old behavior is retained if the metaclass is not used.
+
 v3.0.0
 ======
 
