@@ -37,15 +37,7 @@ class ClassPropertyDescriptor:
         self.fset = fset
 
     def __get__(self, obj, klass=None):
-        if klass is None:
-            klass = type(obj)
         return self.fget.__get__(obj, klass)()
-
-    def __set__(self, obj, value):
-        if not self.fset:
-            raise AttributeError("can't set attribute")
-        type_ = type(obj)
-        return self.fset.__get__(obj, type_)(value)
 
     def setter(self, func):
         if not isinstance(func, (classmethod, staticmethod)):
@@ -55,6 +47,37 @@ class ClassPropertyDescriptor:
 
 
 def classproperty(func):
+    """
+    Like @property but applies at the class level.
+
+    >>> class X:
+    ...   val = None
+    ...   @classproperty
+    ...   def foo(cls):
+    ...     return cls.val
+    ...   @foo.setter
+    ...   def foo(cls, val):
+    ...     cls.val = val
+    >>> X.foo
+    >>> X.foo = 3
+    >>> X.foo
+    3
+    >>> x = X()
+    >>> x.foo
+    3
+    >>> X.foo = 4
+    >>> x.foo
+    4
+
+    Note, setting a value on an instance does not have the
+    intended effect.
+
+    >>> x.foo = 5
+    >>> x.foo
+    5
+    >>> X.foo  # should be 5
+    4
+    """
     if not isinstance(func, (classmethod, staticmethod)):
         func = classmethod(func)
 
