@@ -3,6 +3,8 @@ Routines for obtaining the class names
 of an object and its parent classes.
 """
 
+import itertools
+
 
 def all_bases(c):
     """
@@ -26,7 +28,7 @@ def all_classes(c):
 # http://code.activestate.com/recipes/576949-find-all-subclasses-of-a-given-class/
 
 
-def iter_subclasses(cls, _seen=None):
+def iter_subclasses(cls):
     """
     Generator over all subclasses of a given class, in depth-first order.
 
@@ -53,17 +55,33 @@ def iter_subclasses(cls, _seen=None):
     >>> len(res) > 100
     True
     """
+    return unique_everseen(_iter_all_subclasses(cls))
 
-    if _seen is None:
-        _seen = set()
+
+def _iter_all_subclasses(cls):
     try:
         subs = cls.__subclasses__()
     except TypeError:  # fails only when cls is type
         subs = cls.__subclasses__(cls)
     for sub in subs:
-        if sub in _seen:
-            continue
-        _seen.add(sub)
         yield sub
-        for sub in iter_subclasses(sub, _seen):
-            yield sub
+        yield from iter_subclasses(sub)
+
+
+# From Python 3.8 docs
+def unique_everseen(iterable, key=None):
+    "List unique elements, preserving order. Remember all elements ever seen."
+    # unique_everseen('AAAABBBCCDAABBB') --> A B C D
+    # unique_everseen('ABBCcAD', str.lower) --> A B C D
+    seen = set()
+    seen_add = seen.add
+    if key is None:
+        for element in itertools.filterfalse(seen.__contains__, iterable):
+            seen_add(element)
+            yield element
+    else:
+        for element in iterable:
+            k = key(element)
+            if k not in seen:
+                seen_add(k)
+                yield element
