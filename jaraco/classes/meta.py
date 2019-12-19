@@ -39,6 +39,17 @@ class TagRegistered(type):
     """
     As classes of this metaclass are created, they keep a registry in the
     base class of all classes by a class attribute, indicated by attr_name.
+
+    >>> FooObject = TagRegistered('FooObject', (), dict(tag='foo'))
+    >>> FooObject._registry['foo'] is FooObject
+    True
+    >>> BarObject = TagRegistered('Barobject', (FooObject,), dict(tag='bar'))
+    >>> FooObject._registry is BarObject._registry
+    True
+    >>> len(FooObject._registry)
+    2
+    >>> FooObject._registry['bar']
+    <class 'jaraco.classes.meta.Barobject'>
     """
 
     attr_name = 'tag'
