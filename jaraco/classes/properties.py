@@ -78,6 +78,23 @@ class classproperty:
     ...
     AttributeError: can't set attribute
 
+    It is also possible to wrap a classmethod or staticmethod in
+    a classproperty.
+
+    >>> class Static(metaclass=classproperty.Meta):
+    ...   @classproperty
+    ...   @classmethod
+    ...   def foo(cls):
+    ...     return 'foo'
+    ...   @classproperty
+    ...   @staticmethod
+    ...   def bar():
+    ...     return 'bar'
+    >>> Static.foo
+    'foo'
+    >>> Static.bar
+    'bar'
+
     *Legacy*
 
     For compatibility, if the metaclass isn't specified, the
