@@ -1,3 +1,9 @@
+v3.1.1
+======
+
+Packaging refresh and associated cleanups, including fix
+for #4 (failing black check).
+
 v3.1.0
 ======
 
