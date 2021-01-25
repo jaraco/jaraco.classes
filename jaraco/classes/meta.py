@@ -48,8 +48,10 @@ class TagRegistered(type):
     True
     >>> len(FooObject._registry)
     2
+
+    '...' below should be 'jaraco.classes' but for pytest-dev/pytest#3396
     >>> FooObject._registry['bar']
-    <class 'jaraco.classes.meta.Barobject'>
+    <class '....meta.Barobject'>
     """
 
     attr_name = 'tag'

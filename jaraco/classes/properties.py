@@ -15,8 +15,10 @@ class NonDataProperty:
     >>> x.foo = 4
     >>> x.foo
     4
+
+    '...' below should be 'jaraco.classes' but for pytest-dev/pytest#3396
     >>> X.foo
-    <jaraco.classes.properties.NonDataProperty object at ...>
+    <....properties.NonDataProperty object at ...>
     """
 
     def __init__(self, fget):
