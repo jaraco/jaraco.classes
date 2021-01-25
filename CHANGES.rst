@@ -1,3 +1,8 @@
+v3.2.0
+======
+
+Switched to native namespace for jaraco package.
+
 v3.1.1
 ======
 
