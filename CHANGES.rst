@@ -1,3 +1,10 @@
+v3.2.2
+======
+
+Refreshed package metadata.
+
+Enrolled with Tidelift.
+
 v3.2.1
 ======
 
