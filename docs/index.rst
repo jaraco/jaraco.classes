@@ -7,6 +7,8 @@ Welcome to |project| documentation!
    history
 
 
+.. tidelift-referral-banner::
+
 .. automodule:: jaraco.classes.ancestry
     :members:
     :undoc-members:
@@ -29,4 +31,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
