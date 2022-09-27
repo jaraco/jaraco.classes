@@ -1,3 +1,8 @@
+v3.2.3
+======
+
+#7: Enabled badge with link to docs in the readme.
+
 v3.2.2
 ======
 
