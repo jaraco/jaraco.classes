@@ -1,9 +1,10 @@
 from __future__ import annotations
 
-from collections.abc import Callable
 from typing import TYPE_CHECKING, overload
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
+
     from typing_extensions import NoReturn, Self, TypeAlias
 
     # TODO(bswck): Migrate to PEP 695 by 2027-10. https://peps.python.org/pep-0695/
