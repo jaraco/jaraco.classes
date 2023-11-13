@@ -4,6 +4,13 @@ meta.py
 Some useful metaclasses.
 """
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from typing import Any
+
 
 class LeafClassesMeta(type):
     """
@@ -26,7 +33,14 @@ class LeafClassesMeta(type):
     1
     """
 
-    def __init__(cls, name, bases, attrs):
+    _leaf_classes: set[type[Any]]
+
+    def __init__(
+        cls,
+        name: str,
+        bases: tuple[type[object], ...],
+        attrs: dict[str, object],
+    ) -> None:
         if not hasattr(cls, '_leaf_classes'):
             cls._leaf_classes = set()
         leaf_classes = getattr(cls, '_leaf_classes')
@@ -56,7 +70,12 @@ class TagRegistered(type):
 
     attr_name = 'tag'
 
-    def __init__(cls, name, bases, namespace):
+    def __init__(
+        cls,
+        name: str,
+        bases: tuple[type[object], ...],
+        namespace: dict[str, object],
+    ) -> None:
         super(TagRegistered, cls).__init__(name, bases, namespace)
         if not hasattr(cls, '_registry'):
             cls._registry = {}
