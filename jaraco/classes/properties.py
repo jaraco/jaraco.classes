@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING, overload
 
 if TYPE_CHECKING:
     from collections.abc import Callable
+    from typing import Any
 
     from typing_extensions import NoReturn, Self, TypeAlias
 
@@ -192,7 +193,7 @@ class classproperty:
         self.fset = fset  # type: ignore[assignment] # Corrected in the next line.
         fset and self.setter(fset)
 
-    def __get__(self, instance: object, owner: type[object] | None = None) -> object:
+    def __get__(self, instance: object, owner: type[object] | None = None) -> Any:
         return self.fget.__get__(None, owner)()
 
     def __set__(self, owner: type[object], value: object) -> None:
