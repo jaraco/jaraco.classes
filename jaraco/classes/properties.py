@@ -1,20 +1,28 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, overload
+from typing import TYPE_CHECKING, Generic, TypeVar, cast, overload
+
+_T = TypeVar("_T")
+_T_co = TypeVar("_T_co", covariant=True)
+_T_contra = TypeVar("_T_contra", contravariant=True)
 
 if TYPE_CHECKING:
     from collections.abc import Callable
     from typing import Any
 
-    from typing_extensions import NoReturn, Self, TypeAlias
+    from typing_extensions import Self, TypeAlias
 
     # TODO(coherent-oss/granary#4): Migrate to PEP 695 by 2027-10.
-    _ClassMethodGetter: TypeAlias = classmethod[object, [], object]
-    _StaticMethodGetter: TypeAlias = staticmethod[[], object]
-    _CallableGetter: TypeAlias = Callable[[type[object]], object]
+    _GetterCallable: TypeAlias = Callable[[type[Any]], _T]
+    _GetterClassMethod: TypeAlias = classmethod[Any, [], _T]
+    _GetterStaticMethod: TypeAlias = staticmethod[[], _T]
 
-    _ClassMethodSetter: TypeAlias = classmethod[object, [object], NoReturn]
-    _CallableSetter: TypeAlias = Callable[[type[object], object], NoReturn]
+    _SetterCallable: TypeAlias = Callable[[type[Any], _T], None]
+    _SetterClassMethod: TypeAlias = classmethod[Any, [_T], None]
+
+    class _ClassPropertyAttribute(Generic[_T]):
+        def __get__(self, obj: object, objtype: type[Any] | None = None) -> _T: ...
+        def __set__(self, obj: object, value: _T) -> None: ...
 
 
 class NonDataProperty:
@@ -69,7 +77,7 @@ class NonDataProperty:
         return self.fget(obj)
 
 
-class classproperty:
+class classproperty(Generic[_T]):
     """
     Like @property but applies at the class level.
 
@@ -172,8 +180,8 @@ class classproperty:
     4
     """
 
-    fget: _ClassMethodGetter | _StaticMethodGetter
-    fset: _ClassMethodSetter | None
+    fget: _ClassPropertyAttribute[_GetterClassMethod[_T]]
+    fset: _ClassPropertyAttribute[_SetterClassMethod[_T] | None]
 
     class Meta(type):
         def __setattr__(self, key: str, value: object) -> None:
@@ -184,24 +192,24 @@ class classproperty:
 
     def __init__(
         self,
-        fget: _CallableGetter | _ClassMethodGetter | _StaticMethodGetter,
-        fset: _CallableSetter | _ClassMethodSetter | None = None,
+        fget: _GetterCallable[_T] | _GetterClassMethod[_T] | _GetterStaticMethod[_T],
+        fset: _SetterCallable[_T] | _SetterClassMethod[_T] | None = None,
     ) -> None:
         self.fget = self._ensure_method(fget)
         self.fset = fset  # type: ignore[assignment] # Corrected in the next line.
         fset and self.setter(fset)
 
-    def __get__(self, instance: object, owner: type[object] | None = None) -> Any:
+    def __get__(self, instance: object, owner: type[object]) -> _T:
         return self.fget.__get__(None, owner)()
 
-    def __set__(self, owner: type[object], value: object) -> None:
+    def __set__(self, owner: object, value: _T) -> None:
         if not self.fset:
             raise AttributeError("can't set attribute")
         if type(owner) is not classproperty.Meta:
             owner = type(owner)
-        return self.fset.__get__(None, owner)(value)  # type: ignore[no-any-return]
+        return self.fset.__get__(None, cast("type[object]", owner))(value)
 
-    def setter(self, fset: _ClassMethodSetter | _CallableSetter) -> Self:
+    def setter(self, fset: _SetterCallable[_T] | _SetterClassMethod[_T]) -> Self:
         self.fset = self._ensure_method(fset)
         return self
 
@@ -209,29 +217,25 @@ class classproperty:
     @classmethod
     def _ensure_method(
         cls,
-        fn: _ClassMethodGetter | _CallableGetter,
-    ) -> _ClassMethodGetter: ...
-
-    @overload
-    @classmethod
-    def _ensure_method(cls, fn: _StaticMethodGetter) -> _StaticMethodGetter: ...
+        fn: _GetterCallable[_T] | _GetterClassMethod[_T] | _GetterStaticMethod[_T],
+    ) -> _GetterClassMethod[_T]: ...
 
     @overload
     @classmethod
     def _ensure_method(
         cls,
-        fn: _ClassMethodSetter | _CallableSetter,
-    ) -> _ClassMethodSetter: ...
+        fn: _SetterCallable[_T] | _SetterClassMethod[_T],
+    ) -> _SetterClassMethod[_T]: ...
 
     @classmethod
     def _ensure_method(
         cls,
-        fn: _ClassMethodGetter
-        | _StaticMethodGetter
-        | _CallableGetter
-        | _ClassMethodSetter
-        | _CallableSetter,
-    ) -> _ClassMethodGetter | _StaticMethodGetter | _ClassMethodSetter:
+        fn: _GetterCallable[_T]
+        | _GetterClassMethod[_T]
+        | _GetterStaticMethod[_T]
+        | _SetterCallable[_T]
+        | _SetterClassMethod[_T],
+    ) -> _GetterClassMethod[_T] | _SetterClassMethod[_T]:
         """
         Ensure fn is a classmethod or staticmethod.
         """
