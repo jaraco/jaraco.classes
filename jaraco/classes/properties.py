@@ -197,7 +197,7 @@ class classproperty(Generic[_T]):
         self.fset = fset  # type: ignore[assignment] # Corrected in the next line.
         fset and self.setter(fset)
 
-    def __get__(self, instance: object, owner: type[object]) -> _T:
+    def __get__(self, instance: object, owner: type[object] | None = None) -> _T:
         return self.fget.__get__(None, owner)()
 
     def __set__(self, owner: object, value: _T) -> None:
