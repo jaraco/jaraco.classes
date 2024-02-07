@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 
     from typing_extensions import NoReturn, Self, TypeAlias
 
-    # TODO(bswck): Migrate to PEP 695 by 2027-10. https://peps.python.org/pep-0695/
+    # TODO(coherent-oss/granary#4): Migrate to PEP 695 by 2027-10.
     _ClassMethodGetter: TypeAlias = classmethod[object, [], object]
     _StaticMethodGetter: TypeAlias = staticmethod[[], object]
     _CallableGetter: TypeAlias = Callable[[type[object]], object]
