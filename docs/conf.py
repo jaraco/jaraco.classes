@@ -30,6 +30,17 @@ link_files = {
 
 # Be strict about any broken references
 nitpicky = True
+nitpick_ignore = [
+    ('py:class', 'Self'),
+    ('py:class', '_T'),
+    ('py:obj', 'jaraco.classes.properties._T'),
+    ('py:class', '_ClassPropertyAttribute'),
+    ('py:class', '_GetterCallable'),
+    ('py:class', '_GetterClassMethod'),
+    ('py:class', '_GetterStaticMethod'),
+    ('py:class', '_SetterCallable'),
+    ('py:class', '_SetterClassMethod'),
+]
 
 # Include Python intersphinx mapping to prevent failures
 # jaraco/skeleton#51
