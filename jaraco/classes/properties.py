@@ -3,12 +3,10 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Generic, TypeVar, cast, overload
 
 _T = TypeVar("_T")
-_T_co = TypeVar("_T_co", covariant=True)
-_T_contra = TypeVar("_T_contra", contravariant=True)
 
 if TYPE_CHECKING:
     from collections.abc import Callable
-    from typing import Any
+    from typing import Any, Protocol
 
     from typing_extensions import Self, TypeAlias
 
@@ -20,7 +18,7 @@ if TYPE_CHECKING:
     _SetterCallable: TypeAlias = Callable[[type[Any], _T], None]
     _SetterClassMethod: TypeAlias = classmethod[Any, [_T], None]
 
-    class _ClassPropertyAttribute(Generic[_T]):
+    class _ClassPropertyAttribute(Protocol[_T]):
         def __get__(self, obj: object, objtype: type[Any] | None = None) -> _T: ...
         def __set__(self, obj: object, value: _T) -> None: ...
 
