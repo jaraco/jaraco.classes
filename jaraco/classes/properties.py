@@ -11,15 +11,15 @@ if TYPE_CHECKING:
     from typing_extensions import Self, TypeAlias
 
     # TODO(coherent-oss/granary#4): Migrate to PEP 695 by 2027-10.
-    _GetterCallable: TypeAlias = Callable[[type[Any]], _T]
+    _GetterCallable: TypeAlias = Callable[..., _T]
     _GetterClassMethod: TypeAlias = classmethod[Any, [], _T]
-    _GetterStaticMethod: TypeAlias = staticmethod[[], _T]
 
     _SetterCallable: TypeAlias = Callable[[type[Any], _T], None]
     _SetterClassMethod: TypeAlias = classmethod[Any, [_T], None]
 
     class _ClassPropertyAttribute(Protocol[_T]):
         def __get__(self, obj: object, objtype: type[Any] | None = None) -> _T: ...
+
         def __set__(self, obj: object, value: _T) -> None: ...
 
 
@@ -190,7 +190,7 @@ class classproperty(Generic[_T]):
 
     def __init__(
         self,
-        fget: _GetterCallable[_T] | _GetterClassMethod[_T] | _GetterStaticMethod[_T],
+        fget: _GetterCallable[_T] | _GetterClassMethod[_T],
         fset: _SetterCallable[_T] | _SetterClassMethod[_T] | None = None,
     ) -> None:
         self.fget = self._ensure_method(fget)
@@ -215,7 +215,7 @@ class classproperty(Generic[_T]):
     @classmethod
     def _ensure_method(
         cls,
-        fn: _GetterCallable[_T] | _GetterClassMethod[_T] | _GetterStaticMethod[_T],
+        fn: _GetterCallable[_T] | _GetterClassMethod[_T],
     ) -> _GetterClassMethod[_T]: ...
 
     @overload
@@ -230,7 +230,6 @@ class classproperty(Generic[_T]):
         cls,
         fn: _GetterCallable[_T]
         | _GetterClassMethod[_T]
-        | _GetterStaticMethod[_T]
         | _SetterCallable[_T]
         | _SetterClassMethod[_T],
     ) -> _GetterClassMethod[_T] | _SetterClassMethod[_T]:

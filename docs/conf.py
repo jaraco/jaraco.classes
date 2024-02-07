@@ -37,7 +37,6 @@ nitpick_ignore = [
     ('py:class', '_ClassPropertyAttribute'),
     ('py:class', '_GetterCallable'),
     ('py:class', '_GetterClassMethod'),
-    ('py:class', '_GetterStaticMethod'),
     ('py:class', '_SetterCallable'),
     ('py:class', '_SetterClassMethod'),
 ]
