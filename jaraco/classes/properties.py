@@ -50,16 +50,14 @@ class NonDataProperty:
         self,
         obj: None,
         objtype: type[object] | None = None,
-    ) -> Self:
-        ...
+    ) -> Self: ...
 
     @overload
     def __get__(
         self,
         obj: object,
         objtype: type[object] | None = None,
-    ) -> object:
-        ...
+    ) -> object: ...
 
     def __get__(
         self,
@@ -212,21 +210,18 @@ class classproperty:
     def _ensure_method(
         cls,
         fn: _ClassMethodGetter | _CallableGetter,
-    ) -> _ClassMethodGetter:
-        ...
+    ) -> _ClassMethodGetter: ...
 
     @overload
     @classmethod
-    def _ensure_method(cls, fn: _StaticMethodGetter) -> _StaticMethodGetter:
-        ...
+    def _ensure_method(cls, fn: _StaticMethodGetter) -> _StaticMethodGetter: ...
 
     @overload
     @classmethod
     def _ensure_method(
         cls,
         fn: _ClassMethodSetter | _CallableSetter,
-    ) -> _ClassMethodSetter:
-        ...
+    ) -> _ClassMethodSetter: ...
 
     @classmethod
     def _ensure_method(
