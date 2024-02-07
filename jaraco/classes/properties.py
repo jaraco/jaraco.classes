@@ -1,3 +1,28 @@
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Generic, TypeVar, cast, overload
+
+_T = TypeVar('_T')
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
+    from typing import Any, Protocol
+
+    from typing_extensions import Self, TypeAlias
+
+    # TODO(coherent-oss/granary#4): Migrate to PEP 695 by 2027-10.
+    _GetterCallable: TypeAlias = Callable[..., _T]
+    _GetterClassMethod: TypeAlias = classmethod[Any, [], _T]
+
+    _SetterCallable: TypeAlias = Callable[[type[Any], _T], None]
+    _SetterClassMethod: TypeAlias = classmethod[Any, [_T], None]
+
+    class _ClassPropertyAttribute(Protocol[_T]):
+        def __get__(self, obj: object, objtype: type[Any] | None = None) -> _T: ...
+
+        def __set__(self, obj: object, value: _T) -> None: ...
+
+
 class NonDataProperty:
     """Much like the property builtin, but only implements __get__,
     making it a non-data property, and can be subsequently reset.
@@ -21,18 +46,36 @@ class NonDataProperty:
     <....properties.NonDataProperty object at ...>
     """
 
-    def __init__(self, fget):
+    def __init__(self, fget: Callable[[object], object]) -> None:
         assert fget is not None, "fget cannot be none"
         assert callable(fget), "fget must be callable"
         self.fget = fget
 
-    def __get__(self, obj, objtype=None):
+    @overload
+    def __get__(
+        self,
+        obj: None,
+        objtype: type[object] | None = None,
+    ) -> Self: ...
+
+    @overload
+    def __get__(
+        self,
+        obj: object,
+        objtype: type[object] | None = None,
+    ) -> object: ...
+
+    def __get__(
+        self,
+        obj: object | None,
+        objtype: type[object] | None = None,
+    ) -> Self | object:
         if obj is None:
             return self
         return self.fget(obj)
 
 
-class classproperty:
+class classproperty(Generic[_T]):
     """
     Like @property but applies at the class level.
 
@@ -135,36 +178,63 @@ class classproperty:
     4
     """
 
+    fget: _ClassPropertyAttribute[_GetterClassMethod[_T]]
+    fset: _ClassPropertyAttribute[_SetterClassMethod[_T] | None]
+
     class Meta(type):
-        def __setattr__(self, key, value):
+        def __setattr__(self, key: str, value: object) -> None:
             obj = self.__dict__.get(key, None)
             if type(obj) is classproperty:
                 return obj.__set__(self, value)
             return super().__setattr__(key, value)
 
-    def __init__(self, fget, fset=None):
+    def __init__(
+        self,
+        fget: _GetterCallable[_T] | _GetterClassMethod[_T],
+        fset: _SetterCallable[_T] | _SetterClassMethod[_T] | None = None,
+    ) -> None:
         self.fget = self._ensure_method(fget)
-        self.fset = fset
+        self.fset = fset  # type: ignore[assignment] # Corrected in the next line.
         fset and self.setter(fset)
 
-    def __get__(self, instance, owner=None):
+    def __get__(self, instance: object, owner: type[object] | None = None) -> _T:
         return self.fget.__get__(None, owner)()
 
-    def __set__(self, owner, value):
+    def __set__(self, owner: object, value: _T) -> None:
         if not self.fset:
             raise AttributeError("can't set attribute")
         if type(owner) is not classproperty.Meta:
             owner = type(owner)
-        return self.fset.__get__(None, owner)(value)
+        return self.fset.__get__(None, cast('type[object]', owner))(value)
 
-    def setter(self, fset):
+    def setter(self, fset: _SetterCallable[_T] | _SetterClassMethod[_T]) -> Self:
         self.fset = self._ensure_method(fset)
         return self
 
+    @overload
     @classmethod
-    def _ensure_method(cls, fn):
+    def _ensure_method(
+        cls,
+        fn: _GetterCallable[_T] | _GetterClassMethod[_T],
+    ) -> _GetterClassMethod[_T]: ...
+
+    @overload
+    @classmethod
+    def _ensure_method(
+        cls,
+        fn: _SetterCallable[_T] | _SetterClassMethod[_T],
+    ) -> _SetterClassMethod[_T]: ...
+
+    @classmethod
+    def _ensure_method(
+        cls,
+        fn: _GetterCallable[_T]
+        | _GetterClassMethod[_T]
+        | _SetterCallable[_T]
+        | _SetterClassMethod[_T],
+    ) -> _GetterClassMethod[_T] | _SetterClassMethod[_T]:
         """
         Ensure fn is a classmethod or staticmethod.
         """
         needs_method = not isinstance(fn, (classmethod, staticmethod))
-        return classmethod(fn) if needs_method else fn
+        return classmethod(fn) if needs_method else fn  # type: ignore[arg-type,return-value]
