@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Generic, TypeVar, cast, overload
 
 _T = TypeVar('_T')
+_U = TypeVar('_U')
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -23,7 +24,7 @@ if TYPE_CHECKING:
         def __set__(self, obj: object, value: _T) -> None: ...
 
 
-class NonDataProperty:
+class NonDataProperty(Generic[_T, _U]):
     """Much like the property builtin, but only implements __get__,
     making it a non-data property, and can be subsequently reset.
 
@@ -46,7 +47,7 @@ class NonDataProperty:
     <....properties.NonDataProperty object at ...>
     """
 
-    def __init__(self, fget: Callable[[object], object]) -> None:
+    def __init__(self, fget: Callable[[_T], _U]) -> None:
         assert fget is not None, "fget cannot be none"
         assert callable(fget), "fget must be callable"
         self.fget = fget
@@ -55,21 +56,21 @@ class NonDataProperty:
     def __get__(
         self,
         obj: None,
-        objtype: type[object] | None = None,
+        objtype: None,
     ) -> Self: ...
 
     @overload
     def __get__(
         self,
-        obj: object,
-        objtype: type[object] | None = None,
-    ) -> object: ...
+        obj: _T,
+        objtype: type[_T] | None = None,
+    ) -> _U: ...
 
     def __get__(
         self,
-        obj: object | None,
-        objtype: type[object] | None = None,
-    ) -> Self | object:
+        obj: _T | None,
+        objtype: type[_T] | None = None,
+    ) -> Self | _U:
         if obj is None:
             return self
         return self.fget(obj)
