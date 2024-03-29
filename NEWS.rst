@@ -1,3 +1,12 @@
+v3.4.0
+======
+
+Features
+--------
+
+- Better type hints for NonDataProperty. (#13)
+
+
 v3.3.1
 ======
 
