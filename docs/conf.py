@@ -33,7 +33,9 @@ nitpicky = True
 nitpick_ignore = [
     ('py:class', 'Self'),
     ('py:class', '_T'),
+    ('py:class', '_U'),
     ('py:obj', 'jaraco.classes.properties._T'),
+    ('py:obj', 'jaraco.classes.properties._U'),
     ('py:class', '_ClassPropertyAttribute'),
     ('py:class', '_GetterCallable'),
     ('py:class', '_GetterClassMethod'),
