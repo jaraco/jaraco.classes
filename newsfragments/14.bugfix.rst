@@ -1,0 +1,1 @@
+Restore an explicit MIT license file and avoid downloading license text during package builds.
