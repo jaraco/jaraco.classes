@@ -7,8 +7,6 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, cast
 
-from more_itertools import unique_everseen
-
 if TYPE_CHECKING:
     from collections.abc import Iterator
     from typing import Any
@@ -63,14 +61,21 @@ def iter_subclasses(cls: type[object]) -> Iterator[type[Any]]:
     >>> len(res) > 100
     True
     """
-    return unique_everseen(_iter_all_subclasses(cls))
+    return _iter_all_subclasses(cls)
 
 
 def _iter_all_subclasses(cls: type[object]) -> Iterator[type[Any]]:
-    try:
-        subs = cls.__subclasses__()
-    except TypeError:  # fails only when cls is type
-        subs = cast('type[type]', cls).__subclasses__(cls)
-    for sub in subs:
-        yield sub
-        yield from iter_subclasses(sub)
+    pending = [cls]
+    seen: dict[int, type[Any]] = {}
+    while pending:
+        current = pending.pop()
+        if id(current) in seen:
+            continue
+        seen[id(current)] = current
+        if current is not cls:
+            yield current
+        try:
+            subs = current.__subclasses__()
+        except TypeError:  # fails only when current is type
+            subs = cast('type[type]', current).__subclasses__(current)
+        pending.extend(reversed(subs))
