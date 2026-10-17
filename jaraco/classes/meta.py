@@ -43,7 +43,7 @@ class LeafClassesMeta(type):
     ) -> None:
         if not hasattr(cls, '_leaf_classes'):
             cls._leaf_classes = set()
-        leaf_classes = getattr(cls, '_leaf_classes')
+        leaf_classes = cls._leaf_classes
         leaf_classes.add(cls)
         # remove any base classes
         leaf_classes -= set(bases)
@@ -76,7 +76,7 @@ class TagRegistered(type):
         bases: tuple[type[object], ...],
         namespace: dict[str, object],
     ) -> None:
-        super(TagRegistered, cls).__init__(name, bases, namespace)
+        super().__init__(name, bases, namespace)
         if not hasattr(cls, '_registry'):
             cls._registry = {}
         meta = cls.__class__

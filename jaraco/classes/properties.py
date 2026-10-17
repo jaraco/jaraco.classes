@@ -7,9 +7,9 @@ _U = TypeVar('_U')
 
 if TYPE_CHECKING:
     from collections.abc import Callable
-    from typing import Any, Protocol
+    from typing import Any, Protocol, TypeAlias
 
-    from typing_extensions import Self, TypeAlias
+    from typing_extensions import Self
 
     # TODO(coherent-oss/granary#4): Migrate to PEP 695 by 2027-10.
     _GetterCallable: TypeAlias = Callable[..., _T]
