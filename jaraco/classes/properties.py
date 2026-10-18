@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import inspect
 from typing import TYPE_CHECKING, Generic, TypeVar, cast, overload
 
 _T = TypeVar('_T')
@@ -184,8 +185,8 @@ class classproperty(Generic[_T]):
 
     class Meta(type):
         def __setattr__(self, key: str, value: object) -> None:
-            obj = self.__dict__.get(key, None)
-            if type(obj) is classproperty:
+            obj = inspect.getattr_static(self, key, None)
+            if isinstance(obj, classproperty):
                 return obj.__set__(self, value)
             return super().__setattr__(key, value)
 
@@ -204,7 +205,7 @@ class classproperty(Generic[_T]):
     def __set__(self, owner: object, value: _T) -> None:
         if not self.fset:
             raise AttributeError("can't set attribute")
-        if type(owner) is not classproperty.Meta:
+        if not isinstance(owner, type):
             owner = type(owner)
         return self.fset.__get__(None, cast('type[object]', owner))(value)
 
